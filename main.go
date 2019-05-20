@@ -3,7 +3,7 @@ package main
 import (
 	"PocketMusic/dal"
 	"fmt"
-	_ "github.com/Go-SQL-Driver"
+	_ "github.com/Go-SQL-Driver/mysql"
 	"github.com/gin-gonic/gin"
 )
 
@@ -16,6 +16,7 @@ func main() {
 	r := gin.Default()
 
 	r.GET("/like_num",HandleGetLikeNum)
+	r.GET("/lists")
 	fmt.Printf("Ready!")
-	r.Run()
+	r.Run(":7008")
 }
