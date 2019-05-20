@@ -3,7 +3,7 @@ package main
 import (
 	"PocketMusic/dal"
 	"fmt"
-	_ "github.com/Go-SQL-Driver/mysql"
+	_ "github.com/Go-SQL-Driver"
 	"github.com/gin-gonic/gin"
 )
 
