@@ -12,10 +12,10 @@ type GetLikeStatus struct {
 
 type Music struct {
 	Mid uint `json:"mid"`
-	Mname string `json:"mname"`
+	Name string `json:"name"`
 	Singer string `json:"singer"`
-	Lrc string `json:"lrc"`
-	Source []byte `json:"source"`
+	Lyrics string `json:"lyrics"`
+	Audio []byte `json:"audio"`
 	LikeStatus bool `json:"like_status"`
 }
 
@@ -73,15 +73,19 @@ func HandleGetMusic(c *gin.Context)  {
 	//println("mid:",req.Mid)
 	err := dal.GetMusic(req.Mid,&musicinfo)
 	var music Music
-	music.LikeStatus,err=dal.GetLikeStuatus(req.Mid)
-	music.Mid=musicinfo.Mid
-	music.Mname=musicinfo.Mname
-	music.Singer=musicinfo.Singer
-	music.Lrc=musicinfo.Lrc
-	music.Source,err=ioutil.ReadFile(musicinfo.Source)
 	if err != nil {
 		c.Error(err)
 		return
 	}
-	writeResponse(c,0,"",music)
+	if musicinfo.Source!="" {
+		music.LikeStatus, err = dal.GetLikeStuatus(req.Mid)
+		music.Mid = musicinfo.Mid
+		music.Name = musicinfo.Mname
+		music.Singer = musicinfo.Singer
+		music.Lyrics = musicinfo.Lrc
+		music.Audio, err = ioutil.ReadFile(musicinfo.Source)
+		writeResponse(c,0,"",music)
+	}else {
+		writeResponse(c, 1, "未找到歌曲资源！", music)
+	}
 }

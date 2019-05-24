@@ -42,13 +42,20 @@ func DeleteLike(Mid uint)(bool,error) {
 	return true,err
 }
 
-func GetMusic(Mid uint,music *model.MusicInfo)  (error){
+func GetMusic(Mid uint,music *model.MusicInfo)  (error) {
 	//println("mid:",Mid)
-	row:=db.DB().QueryRow("select mid,mname,singer,lrc,url from songs where mid =?",Mid)
-	err:=row.Scan(&music.Mid,&music.Mname,&music.Singer,&music.Lrc,&music.Source)
-	println("music:",music.Singer)
+	count:=0
+	err:=db.Table("songs").Where("mid =?",Mid).Count(&count).Error
 	if err!=nil{
 		return err
+	}
+	if count>0 {
+		row := db.DB().QueryRow("select mid,mname,singer,lrc,url from songs where mid =?", Mid)
+		err := row.Scan(&music.Mid, &music.Mname, &music.Singer, &music.Lrc, &music.Source)
+		println("music:", music.Singer)
+		if err != nil {
+			return err
+		}
 	}
 	return err
 }
