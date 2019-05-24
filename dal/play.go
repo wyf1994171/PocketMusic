@@ -8,7 +8,7 @@ import (
 func GetLikeStuatus(Mid uint)(bool,error)  {
 	count:=0
 	//println("mid:",Mid)
-	err:=db.Table("likes").Where("mid = ? and status = 1",Mid).Count(&count).Error
+	err:=db.Table("likes").Where("mid = ? and status = 0",Mid).Count(&count).Error
 	//println("count:",count)
 	if count>0{
 		return true,err
@@ -22,7 +22,7 @@ func AddLike(Mid uint)(bool,error)  {
 	if err!=nil{
 		return false,err
 	}else if count>0{
-		_,err:=db.DB().Exec("update likes set status = 1 where mid =?",Mid)
+		_,err:=db.DB().Exec("update likes set status = 0 where mid =?",Mid)
 		if err!=nil{
 			return false,err
 		}
@@ -35,7 +35,7 @@ func AddLike(Mid uint)(bool,error)  {
 	return true,err
 }
 func DeleteLike(Mid uint)(bool,error) {
-	_,err:=db.DB().Exec("update likes set status =0 where mid = ?",Mid)
+	_,err:=db.DB().Exec("update likes set status = 1 where mid = ?",Mid)
 	if err!=nil {
 		return false, err
 	}
