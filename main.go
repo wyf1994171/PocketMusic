@@ -17,6 +17,10 @@ func main() {
 
 	r.GET("/like_num",HandleGetLikeNum)
 	r.GET("/lists")
+	r.GET("/play",HandleGetLikeStatus)
+	r.POST("/play",HandleAddLike)
+	r.DELETE("/play",HandleDeleteLike)
+	r.GET("/play/music",HandleGetMusic)
 	fmt.Printf("Ready!")
 	r.Run(":7008")
 }
