@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	if err := dal.InitDB("admin:password@tcp(119.29.111.64)/testdb"); err != nil {
+	if err := dal.InitDB("admin:testdb123456@tcp(119.29.111.64)/testdb"); err != nil {
 		fmt.Println("Db error:%v",err)
 		return
 	}
@@ -17,6 +17,10 @@ func main() {
 
 	r.GET("/like_num",HandleGetLikeNum)
 	r.GET("/lists")
+	r.GET("/play",HandleGetLikeStatus)
+	r.POST("/play",HandleAddLike)
+	r.DELETE("/play",HandleDeleteLike)
+	r.GET("/play/music",HandleGetMusic)
 	fmt.Printf("Ready!")
 	r.Run(":7008")
 }

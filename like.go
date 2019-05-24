@@ -15,6 +15,7 @@ func HandleGetLikeNum(c *gin.Context) {
 		c.Error(err)
 		return
 	}
+	println("uid:",req.Uid)
 	num, err := dal.GetLikeNum(req.Uid)
 	if err != nil {
 		c.Error(err)
@@ -22,4 +23,3 @@ func HandleGetLikeNum(c *gin.Context) {
 	}
 	writeResponse(c,0,"",num)
 }
-
