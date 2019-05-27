@@ -21,6 +21,7 @@ func main() {
 	r.POST("/play",HandleAddLike)
 	r.DELETE("/play",HandleDeleteLike)
 	r.GET("/play/music",HandleGetMusic)
+	r.DELETE("/play/lists",HandleDeleteLists)
 	fmt.Printf("Ready!")
 	r.Run(":7008")
 }

@@ -89,3 +89,25 @@ func HandleGetMusic(c *gin.Context)  {
 		writeResponse(c, 1, "未找到歌曲资源！", music)
 	}
 }
+
+type List struct{
+	Mid []uint `json:"mid" form "mid"`
+}
+func HandleDeleteLists(c *gin.Context)  {
+	var req List
+	if err := c.Bind(&req); err != nil {
+		c.Error(err)
+		return
+	}
+	//println("mid:",req.Mid)
+	status := true
+	for _,x:= range req.Mid {
+		err := dal.DeleteList(x,status)
+		println("x:",x)
+		if err != nil {
+			c.Error(err)
+			return
+		}
+	}
+	writeResponse(c, 0, "", status)
+}

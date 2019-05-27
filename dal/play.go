@@ -59,3 +59,12 @@ func GetMusic(Mid uint,music *model.MusicInfo)  (error) {
 	}
 	return err
 }
+
+func DeleteList(Lid uint,status bool)  (error){
+	_,err:=db.DB().Exec("update lists set status = 1 where id = ?",Lid)
+	if err!=nil{
+		status=false
+		return err
+	}
+	return err
+}
