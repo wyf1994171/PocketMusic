@@ -1,50 +1,32 @@
 package dal
 
-import (
-	"PocketMusic/dal/model"
-	"time"
-)
 
-func AddComment(uid,mid uint, content string) (uint,error) {
-	comment := &model.Comment{
-		RecordMeta: model.RecordMeta{
-			CreatedAt: time.Now().Local(),
-			UpdatedAt: time.Now().Local(),
-		},
-		Content:  content,
-		Uid:   uid,
-		Mid:   mid,
-		Status: 0,
-	}
-	err := db.Save(comment).Error
-	return comment.ID,err
+import "time"
+
+func GetAllComment(Mid uint) (int, error){
+	whereParam := make(map[string]interface{})
+	whereParam["mid"] = Mid
+	condition := CombineCondition(whereParam)
+	count := 0
+	err := db.Table("comments").Where(condition).Count(&count).Error
+	return count, err
 }
 
-func GetComment(mid uint) ([]map[string]interface{},error) {
-	whereParams := make(map[string]interface{})
-	whereParams["mid"] = mid
-	whereParams["status"] = 0
-	condition := CombineCondition(whereParams)
-	var comments []*model.Comment
-	err := db.Where(condition).Order("updated_at desc").Find(comments).Error
-	result := make([]map[string]interface{},0)
-	for key := range comments{
-		newComment := make(map[string]interface{})
-		newComment["content"] = comments[key].Content
-		newComment["id"] = comments[key].ID
-		newComment["uid"] = comments[key].Uid
-		newComment["updated_at"] = comments[key].UpdatedAt
-		result = append(result,newComment)
+func CreateComment(Mid uint) (error)  {
+	count:=0
+	err:=db.Table("comments").Where("mid =?",Mid).Count(&count).Error
+	if err!=nil{
+		return err
+	}else if count>0{
+		_,err:=db.DB().Exec("update comments set status = 0 where mid =?",Mid)
+		if err!=nil{
+			return err
+		}
+	}else{
+		_,err:=db.DB().Exec("insert into comments(uid,mid,status,update_at,create_at) values(?,?,?,?,?)",1,Mid,1,time.Now().Local(),time.Now().Local())
+		if err !=nil{
+			return err
+		}
 	}
-	return result,err
-}
-
-func DeleteComment(id uint) error {
-	whereParams := make(map[string]interface{})
-	whereParams["id"] = id
-	whereParams["status"] = 0
-	condition := CombineCondition(whereParams)
-	updateParams := make(map[string]interface{})
-	updateParams["status"] = 1
-	return db.Model(model.Comment{}).Where(condition).Updates(updateParams).Error
+	return err
 }

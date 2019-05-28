@@ -2,60 +2,41 @@ package main
 
 import (
 	"PocketMusic/dal"
+	"PocketMusic/dal/model"
+	_ "github.com/Go-SQL-Driver/mysql"
 	"github.com/gin-gonic/gin"
 )
 
-type AddCommentReq struct {
-	Content string  `json:"content" form:"content"`
-	Uid     uint	`json:"uid" form:"uid"`
-	Mid     uint    `json:"mid" form:"mid"`
+type Comment struct {
+	Id	uint `json:"id" form:"id"`
+	Uid uint `json:"uid" form:"uid"`
+	Mid	uint `json:"mid" form:"mid"`
+	Content string `json:"content" form:"content"`
 }
 
-type CommentReq struct {
-	Mid   uint `json:"mid" form:"mid"`
-}
-
-type DeleteCommentReq struct {
-	Id uint	`json:"id" form:"id"`
-}
-func HandleAddComment(ctx *gin.Context){
-	var req AddCommentReq
-	if err := ctx.Bind(&req); err != nil {
-		writeResponse(ctx,-1,err.Error(),nil)
+func HandleGetAllComment(c *gin.Context) {
+	var req Comment
+	if err := c.Bind(&req); err != nil {
+		c.Error(err)
 		return
 	}
-	ID, err := dal.AddComment(req.Uid,req.Mid,req.Content)
+	num, err := dal.GetAllComment(req.Mid)
 	if err != nil {
-		writeResponse(ctx,-1,err.Error(),nil)
+		c.Error(err)
 		return
 	}
-	writeResponse(ctx,0,"success", ID)
+	writeResponse(c,0,"",num)
 }
 
-func HandleGetComment (ctx *gin.Context) {
-	var req CommentReq
-	if err := ctx.Bind(&req); err != nil {
-		writeResponse(ctx,-1,err.Error(),nil)
+func HandleCreateComment(c *gin.Context){
+	var req model.CommentForm
+	if err := c.Bind(&req); err != nil {
+		c.Error(err)
 		return
 	}
-	res, err := dal.GetComment(req.Mid)
+	err := dal.CreateComment(req.UID)
 	if err != nil {
-		writeResponse(ctx,-1,err.Error(),nil)
+		c.Error(err)
 		return
 	}
-	writeResponse(ctx,0,"success", res)
-}
-
-func HandleDeleteComment (ctx *gin.Context) {
-	var req DeleteCommentReq
-	if err := ctx.Bind(&req); err != nil {
-		writeResponse(ctx,-1,err.Error(),nil)
-		return
-	}
-	err := dal.DeleteComment(req.Id)
-	if err != nil {
-		writeResponse(ctx,-1,err.Error(),nil)
-		return
-	}
-	writeResponse(ctx,0,"success", 0)
 }
