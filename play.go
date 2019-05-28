@@ -4,7 +4,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"PocketMusic/dal"
 	"PocketMusic/dal/model"
-	"io/ioutil"
 )
 type GetLikeStatus struct {
 	Mid uint `json:"mid" form:"mid"`
@@ -15,7 +14,7 @@ type Music struct {
 	Name string `json:"name"`
 	Singer string `json:"singer"`
 	Lyrics string `json:"lyrics"`
-	Audio []byte `json:"audio"`
+	Audio string `json:"audio"`
 	LikeStatus bool `json:"like_status"`
 }
 
@@ -83,7 +82,7 @@ func HandleGetMusic(c *gin.Context)  {
 		music.Name = musicinfo.Mname
 		music.Singer = musicinfo.Singer
 		music.Lyrics = musicinfo.Lrc
-		music.Audio, err = ioutil.ReadFile(musicinfo.Source)
+		music.Audio=musicinfo.Source
 		writeResponse(c,0,"",music)
 	}else {
 		writeResponse(c, 1, "未找到歌曲资源！", music)
