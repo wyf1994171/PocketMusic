@@ -9,12 +9,14 @@ import (
 
 func main() {
 	if err := dal.InitDB("admin:password@tcp(119.29.111.64)/testdb"); err != nil {
-		fmt.Println("Db error:%v",err)
+		fmt.Println("Db error:%v", err)
 		return
 	}
 
 	r := gin.Default()
 
+
+	r.GET("/search:Mname_Or_Singer", HandleSearch)
 	r.GET("/like_num",HandleGetLikeNum)
 	r.GET("/lists",HandleGetLists)
 	r.GET("/play",HandleGetLikeStatus)

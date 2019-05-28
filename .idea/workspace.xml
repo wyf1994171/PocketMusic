@@ -36,7 +36,6 @@
         <entry file="file://$PROJECT_DIR$/main.go">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="240">
-              <caret line="21" column="33" selection-start-line="21" selection-start-column="33" selection-end-line="21" selection-end-column="33" />
             </state>
           </provider>
         </entry>
@@ -69,7 +68,6 @@
               <caret line="34" column="19" lean-forward="true" selection-start-line="34" selection-start-column="19" selection-end-line="34" selection-end-column="19" />
               <folding>
                 <element signature="e#13#56#0" expanded="true" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -140,7 +138,7 @@
       </list>
     </option>
   </component>
-  <component name="GOROOT" path="/usr/local/Cellar/go/1.12.4/libexec" />
+  <component name="GOROOT" path="D:\codesoftwares\Go\CE" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
@@ -213,6 +211,9 @@
     <property name="DefaultGoTemplateProperty" value="Go File" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="configurable.Global.GOPATH.is.expanded" value="true" />
+    <property name="configurable.Module.GOPATH.is.expanded" value="false" />
+    <property name="configurable.Project.GOPATH.is.expanded" value="true" />
     <property name="go.gopath.indexing.explicitly.defined" value="true" />
     <property name="go.import.settings.migrated" value="true" />
     <property name="go.sdk.automatically.set" value="true" />
@@ -243,10 +244,9 @@
     <configuration name="go build PocketMusic" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true">
       <module name="PocketMusic" />
       <working_directory value="$PROJECT_DIR$/" />
-      <kind value="PACKAGE" />
+      <kind value="DIRECTORY" />
       <filePath value="$PROJECT_DIR$/" />
-      <package value="PocketMusic" />
-      <directory value="$PROJECT_DIR$/" />
+      <directory value="$PROJECT_DIR$" />
       <method v="2" />
     </configuration>
     <configuration name="go build main.go" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true">
@@ -275,7 +275,7 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Go Build.go build PocketMusic" />
+        <item itemvalue="Go Build.go build PocketMusic/" />
         <item itemvalue="Go Build.go build main.go" />
         <item itemvalue="Go Test.gobench PocketMusic" />
       </list>
@@ -330,6 +330,7 @@
         </state>
       </provider>
     </entry>
+
     <entry file="file://$PROJECT_DIR$/dal/init.go">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="115">
@@ -376,8 +377,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/dal/model/record_meta.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="9" selection-start-line="9" selection-end-line="9" />
+        <state relative-caret-position="324">
+          <caret line="21" selection-start-line="21" selection-end-line="21" />
         </state>
       </provider>
     </entry>
