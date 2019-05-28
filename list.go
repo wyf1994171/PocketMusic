@@ -2,12 +2,93 @@ package main
 
 import (
 	"PocketMusic/dal"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"io/ioutil"
+	"os"
 )
 
 type GetListsReq struct {
 	Uid uint `json:"uid" form:"uid"`
+}
+
+type AddListReq struct {
+	Uid uint`json:"uid" form:"uid"`
+	Name string `json:"name" form:"name"`
+}
+
+type AddListSongReq struct {
+	Lid uint `json:"lid" form:"lid"`
+	Mid []uint `json:"mid" form:"uid"`
+}
+
+type DeleteListSongReq struct {
+	Lid uint `json:"lid" form:"lid"`
+	Mid []uint `json:"mid" form:"uid"`
+}
+func HandleDeleteListSong (ctx *gin.Context) {
+	var req DeleteListSongReq
+	if err := ctx.Bind(&req); err != nil {
+		writeResponse(ctx,-1,err.Error(),nil)
+		return
+	}
+	for key := range req.Mid {
+		err := dal.DeleteListSong(req.Lid,req.Mid[key])
+		if err != nil {
+			writeResponse(ctx,-1,err.Error(),nil)
+			return
+		}
+	}
+	writeResponse(ctx,0,"success",nil)
+}
+func HandleListAddSong (ctx *gin.Context) {
+	var req AddListSongReq
+	if err := ctx.Bind(&req); err != nil {
+		writeResponse(ctx,-1,err.Error(),nil)
+		return
+	}
+	for key := range req.Mid {
+		err := dal.AddListSong(req.Lid,req.Mid[key])
+		if err != nil {
+			writeResponse(ctx,-1,err.Error(),nil)
+			return
+		}
+	}
+	writeResponse(ctx,0,"success",nil)
+}
+func HandleAddList (ctx *gin.Context) {
+	var req AddListReq
+	if err := ctx.Bind(&req); err != nil {
+		ctx.Error(err)
+		return
+	}
+	file, _, err := ctx.Request.FormFile("file")
+
+	if err != nil {
+		writeResponse(ctx,-1,"文件解析错误",nil)
+		return
+	}
+	Id,err:=dal.AddList(req.Uid,req.Name)
+	fileName := fmt.Sprintf("%v.jpg",Id)
+	buf, err := ioutil.ReadAll(file)
+	file2, err := os.OpenFile(fileName,os.O_CREATE|os.O_WRONLY,0755)
+	if err != nil {
+		fmt.Println("error", err)
+		os.Exit(1)
+	}
+	defer file.Close()
+	defer file2.Close()
+	_, err = file2.WriteAt(buf,0)
+	if err != nil {
+		writeResponse(ctx,-1,"file read fail",nil)
+		return
+	}
+	err = dal.AddListCoverPath(fileName,Id)
+	if err != nil {
+		writeResponse(ctx,-1,err.Error(),nil)
+		return
+	}
+	writeResponse(ctx,0,"",Id)
 }
 
 func HandleGetLists (ctx *gin.Context) {
