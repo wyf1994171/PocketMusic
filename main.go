@@ -15,8 +15,14 @@ func main() {
 
 	r := gin.Default()
 
-	r.GET("/like_num", HandleGetLikeNum)
+
 	r.GET("/search:Mname_Or_Singer", HandleSearch)
+	r.GET("/like_num",HandleGetLikeNum)
+	r.GET("/lists",HandleGetLists)
+	r.GET("/play",HandleGetLikeStatus)
+	r.POST("/play",HandleAddLike)
+	r.DELETE("/play",HandleDeleteLike)
+	r.GET("/play/music",HandleGetMusic)
 	fmt.Printf("Ready!")
-	r.Run()
+	r.Run(":7008")
 }

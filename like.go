@@ -22,4 +22,3 @@ func HandleGetLikeNum(c *gin.Context) {
 	}
 	writeResponse(c,0,"",num)
 }
-
