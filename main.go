@@ -23,6 +23,8 @@ func main() {
 	r.POST("/play",HandleAddLike)
 	r.DELETE("/play",HandleDeleteLike)
 	r.GET("/play/music",HandleGetMusic)
+	r.POST("/create_comment",HandleCreateComment)
+	r.GET("/get_all_comment", HandleGetAllComment)
 	fmt.Printf("Ready!")
 	r.Run(":7008")
 }
