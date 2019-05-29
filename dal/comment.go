@@ -1,32 +1,40 @@
 package dal
 
+import (
+	"PocketMusic/dal/model"
+	"time"
+)
 
-import "time"
-
-func GetAllComment(Mid uint) (int, error){
-	whereParam := make(map[string]interface{})
-	whereParam["mid"] = Mid
-	condition := CombineCondition(whereParam)
-	count := 0
-	err := db.Table("comments").Where(condition).Count(&count).Error
-	return count, err
+func GetAllComment(Mid uint) ([]map[string]interface{}, error){
+	whereParams := make(map[string]interface{})
+	whereParams["mid"] = Mid
+	whereParams["status"] = 0
+	condition := CombineCondition(whereParams)
+	var comments []*model.Comment
+	err := db.Table("comments").Where(condition).Order("updated_at desc").Error
+	result := make([]map[string]interface{}, 0)
+	for key := range comments{
+		newComment := make(map[string]interface{})
+		newComment["mid"] = comments[key].MID
+		newComment["uid"] = comments[key].UID
+		newComment["content"] = comments[key].Content
+		newComment["updated_at"] = comments[key].UpdatedAt
+		result = append(result,newComment)
+	}
+	return result, err
 }
 
-func CreateComment(Mid uint) (error)  {
-	count:=0
-	err:=db.Table("comments").Where("mid =?",Mid).Count(&count).Error
-	if err!=nil{
-		return err
-	}else if count>0{
-		_,err:=db.DB().Exec("update comments set status = 0 where mid =?",Mid)
-		if err!=nil{
-			return err
-		}
-	}else{
-		_,err:=db.DB().Exec("insert into comments(uid,mid,status,update_at,create_at) values(?,?,?,?,?)",1,Mid,1,time.Now().Local(),time.Now().Local())
-		if err !=nil{
-			return err
-		}
+func CreateComment(Uid,Mid uint, content string) (uint, error)  {
+	comment := &model.Comment{
+		RecordMeta: model.RecordMeta{
+			CreatedAt: time.Now().Local(),
+			UpdatedAt: time.Now().Local(),
+		},
+		Content:  content,
+		UID:   Uid,
+		MID:   Mid,
+		Status: 0,
 	}
-	return err
+	err := db.Save(comment).Error
+	return comment.UID, err
 }
