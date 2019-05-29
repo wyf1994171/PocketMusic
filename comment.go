@@ -16,13 +16,11 @@ func HandleGetAllComment(ctx *gin.Context) {
 	var req CommentForm
 	if err := ctx.Bind(&req); err != nil {
 		writeResponse(ctx,-1,err.Error(),nil)
-		ctx.Error(err)
 		return
 	}
 	res, err := dal.GetAllComment(req.Mid)
 	if err != nil {
 		writeResponse(ctx,-1,err.Error(),nil)
-		ctx.Error(err)
 		return
 	}
 	writeResponse(ctx,0,"",res)
@@ -31,14 +29,12 @@ func HandleGetAllComment(ctx *gin.Context) {
 func HandleCreateComment(ctx *gin.Context){
 	var req CommentForm
 	if err := ctx.Bind(&req); err != nil {
-		ctx.Error(err)
 		writeResponse(ctx,-1,err.Error(),nil)
 		return
 	}
 	ID, err := dal.CreateComment(req.Uid,req.Mid,req.Content)
 	if err != nil {
 		writeResponse(ctx,-1,err.Error(),nil)
-		ctx.Error(err)
 		return
 	}
 	writeResponse(ctx,0,"success", ID)
