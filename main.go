@@ -29,6 +29,7 @@ func main() {
 	r.GET("/play/music",HandleGetMusic)
 	r.POST("/create_comment",HandleCreateComment)
 	r.GET("/get_all_comment", HandleGetAllComment)
+	r.GET("songs",HandleGetSong)
 	fmt.Printf("Ready!")
 	r.Run(":7007")
 }

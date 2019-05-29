@@ -52,7 +52,7 @@ func GetMusic(Mid uint,music *model.MusicInfo)  (error) {
 	if count>0 {
 		row := db.DB().QueryRow("select mid,mname,singer,lrc,url from songs where mid =?", Mid)
 		err := row.Scan(&music.Mid, &music.Mname, &music.Singer, &music.Lrc, &music.Source)
-		println("music:", music.Singer)
+		//println("music:", music.Singer)
 		if err != nil {
 			return err
 		}
