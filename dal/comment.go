@@ -2,10 +2,20 @@ package dal
 
 import (
 	"PocketMusic/dal/model"
+	"fmt"
+	_ "github.com/Go-SQL-Driver/mysql"
 	"time"
 )
 
+func main(){
+	if err := InitDB("admin:testdb123456@tcp(119.29.111.64)/testdb"); err != nil {
+		fmt.Println("Db error:%v",err)
+		return
+	}
+}
+
 func GetAllComment(Mid uint) ([]map[string]interface{}, error){
+
 	whereParams := make(map[string]interface{})
 	whereParams["mid"] = Mid
 	whereParams["status"] = 0
