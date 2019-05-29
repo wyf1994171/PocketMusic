@@ -18,7 +18,6 @@ func GetAllComment(Mid uint) ([]map[string]interface{}, error){
 		newComment["mid"] = comments[key].MID
 		newComment["uid"] = comments[key].UID
 		newComment["content"] = comments[key].Content
-		newComment["updated_at"] = comments[key].UpdatedAt
 		result = append(result,newComment)
 	}
 	return result, err
