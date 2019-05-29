@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 )
 type GetLikeStatus struct {
+	Uid string `json:"uid" form:"uid"`
 	Mid uint `json:"mid" form:"mid"`
 }
 
@@ -26,7 +27,7 @@ func HandleGetLikeStatus(c *gin.Context) {
 		return
 	}
 	//println("mid:",req.Mid)
-	status, err := dal.GetLikeStuatus(req.Mid)
+	status, err := dal.GetLikeStuatus(req.Uid,req.Mid)
 	if err != nil {
 		c.Error(err)
 		return
@@ -41,7 +42,7 @@ func HandleAddLike(c *gin.Context)  {
 		return
 	}
 	//println("mid:",req.Mid)
-	status, err := dal.AddLike(req.Mid)
+	status, err := dal.AddLike(req.Uid,req.Mid)
 	if err != nil {
 		c.Error(err)
 		return
@@ -56,7 +57,7 @@ func HandleDeleteLike(c *gin.Context){
 		return
 	}
 	//println("mid:",req.Mid)
-	status, err := dal.DeleteLike(req.Mid)
+	status, err := dal.DeleteLike(req.Uid,req.Mid)
 	if err != nil {
 		c.Error(err)
 		return
@@ -78,7 +79,7 @@ func HandleGetMusic(c *gin.Context)  {
 		return
 	}
 	if musicinfo.Source!="" {
-		music.LikeStatus, err = dal.GetLikeStuatus(req.Mid)
+		music.LikeStatus, err = dal.GetLikeStuatus(req.Uid,req.Mid)
 		music.Mid = musicinfo.Mid
 		music.Name = musicinfo.Mname
 		music.Singer = musicinfo.Singer
@@ -90,12 +91,16 @@ func HandleGetMusic(c *gin.Context)  {
 		writeResponse(c, 1, "未找到歌曲资源！", music)
 	}
 }
+
+type SongsReq struct {
+	Url string `json:"url" form:"url"`
+} 
 func HandleGetSong(c *gin.Context)  {
-	var url string
-	if err := c.Bind(url); err != nil {
+	var req SongsReq
+	if err := c.Bind(&req); err != nil {
 		c.Error(err)
 		return
 	}
-	source,_:=ioutil.ReadFile(url)
+	source,_:=ioutil.ReadFile(req.Url)
 	c.Data(200,"audio/mp3",source)
 }
