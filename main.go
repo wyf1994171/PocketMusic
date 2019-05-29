@@ -9,7 +9,7 @@ import (
 
 func main() {
 
-	if err := dal.InitDB("admin:testdb123456@tcp(119.29.111.64)/testdb"); err != nil {
+	if err := dal.InitDB("admin:password@tcp(119.29.111.64)/testdb"); err != nil {
 		fmt.Println("Db error:%v", err)
 		return
 	}
@@ -29,7 +29,9 @@ func main() {
 	r.GET("/play/music",HandleGetMusic)
 	r.POST("/create_comment",HandleCreateComment)
 	r.GET("/get_all_comment", HandleGetAllComment)
-	r.GET("songs",HandleGetSong)
+	r.GET("/songs",HandleGetSong)
+	r.GET("/recent",HandleGetRecent)
+	r.POST("user",HandleAddUser)
 	fmt.Printf("Ready!")
 	r.Run(":7007")
 }

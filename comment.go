@@ -19,6 +19,14 @@ func HandleGetAllComment(ctx *gin.Context) {
 		return
 	}
 	res, err := dal.GetAllComment(req.Mid)
+	for key := range res {
+		name, err := dal.GetUserInfoByUid(res[key]["uid"].(string))
+		if err != nil {
+			writeResponse(ctx,-1,err.Error(),nil)
+			return
+		}
+		res[key]["name"] = name
+	}
 	if err != nil {
 		writeResponse(ctx,-1,err.Error(),nil)
 		return

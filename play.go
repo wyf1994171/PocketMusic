@@ -42,12 +42,12 @@ func HandleAddLike(c *gin.Context)  {
 		return
 	}
 	//println("mid:",req.Mid)
-	status, err := dal.AddLike(req.Uid,req.Mid)
+	err := dal.AddLike(req.Uid,req.Mid)
 	if err != nil {
 		c.Error(err)
 		return
 	}
-	writeResponse(c,0,"",status)
+	writeResponse(c,0,"",0)
 }
 
 func HandleDeleteLike(c *gin.Context){
@@ -57,12 +57,12 @@ func HandleDeleteLike(c *gin.Context){
 		return
 	}
 	//println("mid:",req.Mid)
-	status, err := dal.DeleteLike(req.Uid,req.Mid)
+	err := dal.DeleteLike(req.Uid,req.Mid)
 	if err != nil {
 		c.Error(err)
 		return
 	}
-	writeResponse(c,0,"",status)
+	writeResponse(c,0,"",0)
 }
 func HandleGetMusic(c *gin.Context)  {
 	var req GetLikeStatus
@@ -76,6 +76,11 @@ func HandleGetMusic(c *gin.Context)  {
 	var music Music
 	if err != nil {
 		c.Error(err)
+		return
+	}
+	err = dal.AddRecent(req.Uid,req.Mid)
+	if err != nil {
+		writeResponse(c,-1,err.Error(),nil)
 		return
 	}
 	if musicinfo.Source!="" {
