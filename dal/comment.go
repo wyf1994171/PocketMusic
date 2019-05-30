@@ -23,7 +23,7 @@ func GetAllComment(Mid uint) ([]map[string]interface{}, error){
 	return result, err
 }
 
-func CreateComment(Uid,Mid uint, content string) error {
+func CreateComment(Uid string, Mid uint, content string) error {
 	comment := &model.Comment{
 		RecordMeta: model.RecordMeta{
 			CreatedAt: time.Now().Local(),
