@@ -12,38 +12,38 @@ type CommentForm struct {
 	Content string `json:"content" form:"content"`
 }
 
-func HandleGetAllComment(ctx *gin.Context) {
+func HandleGetAllComment(c *gin.Context) {
 	var req CommentForm
-	if err := ctx.Bind(&req); err != nil {
-		writeResponse(ctx,-1,err.Error(),nil)
+	if err := c.Bind(&req); err != nil {
+		writeResponse(c,-1,err.Error(),nil)
 		return
 	}
 	res, err := dal.GetAllComment(req.Mid)
 	for key := range res {
 		name, err := dal.GetUserInfoByUid(res[key]["uid"].(string))
 		if err != nil {
-			writeResponse(ctx,-1,err.Error(),nil)
+			writeResponse(c,-1,err.Error(),nil)
 			return
 		}
 		res[key]["name"] = name
 	}
 	if err != nil {
-		writeResponse(ctx,-1,err.Error(),nil)
+		writeResponse(c,-1,err.Error(),nil)
 		return
 	}
-	writeResponse(ctx,0,"",res)
+	writeResponse(c,0,"",res)
 }
 
-func HandleCreateComment(ctx *gin.Context){
+func HandleCreateComment(c *gin.Context){
 	var req CommentForm
-	if err := ctx.Bind(&req); err != nil {
-		writeResponse(ctx,-1,err.Error(),nil)
+	if err := c.Bind(&req); err != nil {
+		writeResponse(c,-1,err.Error(),nil)
 		return
 	}
-	ID, err := dal.CreateComment(req.Uid,req.Mid,req.Content)
+	err := dal.CreateComment(req.Uid,req.Mid,req.Content)
 	if err != nil {
-		writeResponse(ctx,-1,err.Error(),nil)
+		writeResponse(c,-1,err.Error(),nil)
 		return
 	}
-	writeResponse(ctx,0,"success", ID)
+	writeResponse(c,0,"success", err)
 }
