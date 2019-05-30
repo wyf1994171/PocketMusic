@@ -15,12 +15,23 @@ func GetLikeNum(Uid uint) (int,error) {
 }
 
 func AddLike(Uid string, Mid uint) error {
-	like := &model.Like{
-		Uid: Uid,
-		Mid: Mid,
-		Status: 0,
+	var count uint
+	err:=db.Table("likes").Where("uid = ? and mid = ?",Uid,Mid).Count(&count).Error
+	//println(count)
+	if err==nil {
+		if count == 0 {
+			like := &model.Like{
+				Uid:    Uid,
+				Mid:    Mid,
+				Status: 0,
+			}
+			err := db.Save(like).Error
+			return err
+		} else {
+			_,err := db.DB().Exec("update likes set status = 0 where uid = ? and mid = ?",Uid,Mid)
+			return err
+		}
 	}
-	err := db.Save(like).Error
 	return err
 }
 
@@ -31,6 +42,6 @@ func DeleteLike(Uid string, Mid uint) error {
 	whereParams["status"] = 0
 	condition := CombineCondition(whereParams)
 	updateParams := make(map[string]interface{})
-	updateParams["status"] = 0
+	updateParams["status"] = 1
 	return db.Model(&model.Like{}).Where(condition).Updates(updateParams).Error
 }
