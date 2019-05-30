@@ -74,6 +74,8 @@ func printSearch(rows *sql.Rows, c *gin.Context) {
 		songResult.createAt = createAt
 		fmt.Println(updateAt)
 		songResult.updateAt = updateAt
-		c.String(200, strconv.Itoa(songResult.id)+"%"+strconv.Itoa(songResult.mid)+"%"+songResult.mname+"%"+songResult.singer+"%"+songResult.url+"%"+songResult.lrc+"\n")
+		c.String(200, strconv.Itoa(songResult.mid)+"\n")
+		c.String(200, songResult.mname+"\n")
+		c.String(200, songResult.singer+"\n")
 	}
 }
