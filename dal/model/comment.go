@@ -1,7 +1,7 @@
 package model
 
 type Comment struct {
-	UID        uint   `json: "uid"`
+	UID        string   `json: "uid"`
 	MID        uint   `json: "mid"`
 	Content    string `json："content"`
 	Status     uint   `json: "status"`
