@@ -26,6 +26,10 @@ type DeleteListSongReq struct {
 	Lid uint `json:"lid" form:"lid"`
 	Mid []uint `json:"mid" form:"uid"`
 }
+type DeleteListReq struct {
+	Uid string `json:"uid" form:"uid"`
+	Lid []uint `json:"lid" form:"lid"`
+}
 func HandleDeleteListSong (ctx *gin.Context) {
 	var req DeleteListSongReq
 	if err := ctx.Bind(&req); err != nil {
@@ -106,4 +110,19 @@ func HandleGetLists (ctx *gin.Context) {
 		result[key]["cover_path"], _ = ioutil.ReadFile(result[key]["cover_path"].(string))
 	}
 	writeResponse(ctx,0,"", result)
+}
+
+func HandleDeleteList(ctx *gin.Context)  {
+	var req DeleteListReq
+	if err := ctx.Bind(&req); err != nil {
+		ctx.Error(err)
+		return
+	}
+	for _,x:=range req.Lid{
+		err:=dal.DeleteList(req.Uid,x)
+		if err!=nil{
+			return
+		}
+	}
+	writeResponse(ctx,0,"",true)
 }

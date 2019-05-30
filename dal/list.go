@@ -74,3 +74,8 @@ func DeleteListSong(lid,mid uint) error {
 	updateParams["updated_at"] = time.Now().Local()
 	return db.Model(&model.ListSong{}).Where(condition).Updates(updateParams).Error
 }
+
+func DeleteList(Uid string,Lid uint)(error)  {
+	return db.Table("lists").Where("id = ? and uid =?",Lid,Uid).Update("status = 1").Error
+}
+
