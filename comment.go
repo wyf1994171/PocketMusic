@@ -45,5 +45,5 @@ func HandleCreateComment(c *gin.Context){
 		writeResponse(c,-1,err.Error(),nil)
 		return
 	}
-	writeResponse(c,0,"success", 0)
+	writeResponse(c,0,"success", err)
 }
