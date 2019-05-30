@@ -10,7 +10,11 @@ type GetLikeStatus struct {
 	Uid string `json:"uid" form:"uid"`
 	Mid uint `json:"mid" form:"mid"`
 }
-
+type ChangeLikeStatus struct {
+	Uid string `json:"uid" form:"uid"`
+	Mid uint `json:"mid" form:"mid"`
+	Status uint `json:"status" form:"status"`
+}
 type Music struct {
 	Mid uint `json:"mid"`
 	Name string `json:"name"`
@@ -108,4 +112,19 @@ func HandleGetSong(c *gin.Context)  {
 	}
 	source,_:=ioutil.ReadFile(req.Url)
 	c.Data(200,"audio/mp3",source)
+}
+
+func HandleLikestatus(c *gin.Context)  {
+	var req ChangeLikeStatus
+	if err := c.Bind(&req); err != nil {
+		c.Error(err)
+		return
+	}
+	//println("mid:",req.Mid)
+	err := dal.ChangeLike(req.Uid,req.Mid,req.Status)
+	if err != nil {
+		c.Error(err)
+		return
+	}
+	writeResponse(c,0,"",0)
 }
