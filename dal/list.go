@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-func GetLists(uid uint)([]map[string]interface{},error) {
+func GetLists(uid string)([]map[string]interface{},error) {
 	whereParams := make(map[string]interface{})
 	whereParams["uid"] = uid
 	whereParams["status"] = 0

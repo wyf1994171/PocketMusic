@@ -9,7 +9,7 @@ import (
 )
 
 type GetListsReq struct {
-	Uid uint `json:"uid" form:"uid"`
+	Uid string `json:"uid" form:"uid"`
 }
 
 type AddListReq struct {

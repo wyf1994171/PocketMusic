@@ -25,7 +25,7 @@ func main() {
 	r.DELETE("/lists/song",HandleDeleteListSong)
 	r.GET("/play",HandleLikestatus)
 	//r.POST("/play",HandleAddLike)
-	//r.DELETE("/play",HandleDeleteLike)
+	r.DELETE("/play",HandleDeleteLike)
 	r.GET("/play/music",HandleGetMusic)
 	r.POST("/create_comment",HandleCreateComment)
 	r.GET("/get_all_comment", HandleGetAllComment)
