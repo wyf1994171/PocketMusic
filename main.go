@@ -7,9 +7,12 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+ var dsn = "admin:t@tcp(119.29.111.64)/testdb?charset=utf8&parseTime=True&loc=Local"
+
+
 func main() {
 
-	if err := dal.InitDB("admin:testdb123456@tcp(119.29.111.64)/testdb?charset=utf8&parseTime=True&loc=Local"); err != nil {
+	if err := dal.InitDB(dsn); err != nil {
 		fmt.Println("Db error:%v", err)
 		return
 	}

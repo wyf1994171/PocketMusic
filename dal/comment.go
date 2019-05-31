@@ -37,7 +37,7 @@ func CreateComment(Uid string,Mid string, content string) error {
 		Status: 0,
 	}
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	db, err := sql.Open("mysql", "admin:testdb123456@tcp(119.29.111.64:3306)/testdb?parseTime=true")
+	db, err := sql.Open("mysql", "admin:t@tcp(119.29.111.64:3306)/testdb?parseTime=true")
 	checkErr(err)
 	var cid int
 	rows, err := db.Query("SELECT cid FROM comments")//获得comments表中primarykey：cid的最大值
