@@ -22,6 +22,7 @@ func main() {
 
 	r.GET("/search:Mname_Or_Singer", HandleSearch)
 	r.GET("/like_num",HandleGetLikeNum)
+	r.GET("/like/list",HandleGetLikeList)
 	r.GET("/lists",HandleGetLists)
 	r.POST("/lists",HandleAddList)
 	r.POST("/lists/song",HandleListAddSong)

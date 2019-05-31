@@ -4,7 +4,7 @@ import (
 	"PocketMusic/dal/model"
 )
 
-func GetLikeNum(Uid uint) (int,error) {
+func GetLikeNum(Uid string) (int,error) {
 	whereParam := make(map[string]interface{})
 	whereParam["uid"] = Uid
 	whereParam["status"] = 0
@@ -44,4 +44,18 @@ func DeleteLike(Uid string, Mid uint) error {
 	updateParams := make(map[string]interface{})
 	updateParams["status"] = 1
 	return db.Model(&model.Like{}).Where(condition).Updates(updateParams).Error
+}
+
+func GetLikeList(Uid string) ([]uint,error) {
+	whereParams := make(map[string]interface{})
+	whereParams["uid"] = Uid
+	whereParams["status"] = 0
+	condition := CombineCondition(whereParams)
+	var likes []*model.Like
+	err := db.Where(condition).Find(&likes).Error
+	var res []uint
+	for key := range likes {
+		res = append(res,likes[key].Mid)
+	}
+	return res,err
 }
