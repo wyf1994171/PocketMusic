@@ -7,7 +7,7 @@ import (
 
 type CommentForm struct {
 	Uid string `json:"uid" form:"uid"`
-	Mid	uint `json:"mid" form:"mid"`
+	Mid	string `json:"mid" form:"mid"`
 	Content string `json:"content" form:"content"`
 }
 
