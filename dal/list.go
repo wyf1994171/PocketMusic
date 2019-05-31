@@ -11,7 +11,7 @@ func GetLists(uid string)([]map[string]interface{},error) {
 	whereParams["status"] = 0
 	condition := CombineCondition(whereParams)
 	var lists []*model.List
-	err := db.Where(condition).Find(&lists).Error
+	err := db.Debug().Where(condition).Find(&lists).Error
 	result := make([]map[string]interface{},0)
 	for key := range lists {
 		res := make(map[string]interface{})
@@ -24,9 +24,9 @@ func GetLists(uid string)([]map[string]interface{},error) {
 	return result,err
 }
 
-func AddList(uid uint,name string) (uint,error) {
+func AddList(uid string,name string) (uint,error) {
 	list := &model.List{
-		RecordMeta :model.RecordMeta{
+		RecordMeta : model.RecordMeta{
 			CreatedAt: time.Now().Local(),
 			UpdatedAt: time.Now().Local(),
 		},
@@ -35,8 +35,8 @@ func AddList(uid uint,name string) (uint,error) {
 		Num: 0,
 		UID: uid,
 	}
-	err := db.Save(list).Error
-	return list.ID, err
+	err := db.Save(list.RecordMeta.ID).Error
+	return list.RecordMeta.ID, err
 }
 
 func AddListCoverPath(coverPath string,id uint) error {
@@ -61,6 +61,20 @@ func AddListSong(lid,mid uint) error {
 	}
 	err := db.Save(listSong).Error
 	return err
+}
+
+func GetListSongIds(lid uint) ([]uint,error) {
+	whereParams := make(map[string]interface{})
+	whereParams["lid"] = lid
+	whereParams["status"] = 0
+	condition := CombineCondition(whereParams)
+	var listSongs []*model.ListSong
+	err := db.Where(condition).Find(&listSongs).Error
+	var result []uint
+	for key := range listSongs {
+		result =append(result,listSongs[key].Mid)
+	}
+	return result,err
 }
 
 func DeleteListSong(lid,mid uint) error {

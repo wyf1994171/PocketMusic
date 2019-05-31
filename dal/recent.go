@@ -24,7 +24,7 @@ func GetRecent(Uid string) ([]uint,error) {
 	whereParams["status"] = 0
 	condition := CombineCondition(whereParams)
 	var recents []*model.Recent
-	err := db.Where(condition).Order("order by updated_at desc").Find(recents).Error
+	err := db.Where(condition).Order("updated_at desc").Find(&recents).Error
 	results := make([]uint,0)
 	for key := range recents {
 		results = append(results,recents[key].Mid)

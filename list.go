@@ -13,7 +13,7 @@ type GetListsReq struct {
 }
 
 type AddListReq struct {
-	Uid uint`json:"uid" form:"uid"`
+	Uid string`json:"uid" form:"uid"`
 	Name string `json:"name" form:"name"`
 }
 
@@ -29,6 +29,9 @@ type DeleteListSongReq struct {
 type DeleteListReq struct {
 	Uid string `json:"uid" form:"uid"`
 	Lid []uint `json:"lid" form:"lid"`
+}
+type GetListSongsReq struct {
+	Lid uint  `json:"lid" form:"lid"`
 }
 func HandleDeleteListSong (ctx *gin.Context) {
 	var req DeleteListSongReq
@@ -66,31 +69,29 @@ func HandleAddList (ctx *gin.Context) {
 		ctx.Error(err)
 		return
 	}
+	Id,err:=dal.AddList(req.Uid,req.Name)
 	file, _, err := ctx.Request.FormFile("file")
 
-	if err != nil {
-		writeResponse(ctx,-1,"文件解析错误",nil)
-		return
-	}
-	Id,err:=dal.AddList(req.Uid,req.Name)
-	fileName := fmt.Sprintf("%v.jpg",Id)
-	buf, err := ioutil.ReadAll(file)
-	file2, err := os.OpenFile(fileName,os.O_CREATE|os.O_WRONLY,0755)
-	if err != nil {
-		fmt.Println("error", err)
-		os.Exit(1)
-	}
-	defer file.Close()
-	defer file2.Close()
-	_, err = file2.WriteAt(buf,0)
-	if err != nil {
-		writeResponse(ctx,-1,"file read fail",nil)
-		return
-	}
-	err = dal.AddListCoverPath(fileName,Id)
-	if err != nil {
-		writeResponse(ctx,-1,err.Error(),nil)
-		return
+	if err == nil {
+		fileName := fmt.Sprintf("%v.jpg",Id)
+		buf, err := ioutil.ReadAll(file)
+		file2, err := os.OpenFile(fileName,os.O_CREATE|os.O_WRONLY,0755)
+		if err != nil {
+			fmt.Println("error", err)
+			os.Exit(1)
+		}
+		defer file.Close()
+		defer file2.Close()
+		_, err = file2.WriteAt(buf,0)
+		if err != nil {
+			writeResponse(ctx,-1,"file read fail",nil)
+			return
+		}
+		err = dal.AddListCoverPath(fileName,Id)
+		if err != nil {
+			writeResponse(ctx,-1,err.Error(),nil)
+			return
+		}
 	}
 	writeResponse(ctx,0,"",Id)
 }
@@ -125,4 +126,26 @@ func HandleDeleteList(ctx *gin.Context)  {
 		}
 	}
 	writeResponse(ctx,0,"",true)
+}
+func HandleGetListSongs(ctx *gin.Context) {
+	var req GetListSongsReq
+	if err := ctx.Bind(&req); err != nil {
+		ctx.Error(err)
+		return
+	}
+	Ids,err := dal.GetListSongIds(req.Lid)
+	if err != nil {
+		ctx.Error(err)
+		return
+	}
+	songs := make([]map[string]interface{},0)
+	for key := range Ids {
+		song,err := dal.GetMusicInfoById(Ids[key])
+		if err != nil {
+			ctx.Error(err)
+			return
+		}
+		songs = append(songs,song)
+	}
+	writeResponse(ctx,0,"",songs)
 }

@@ -9,7 +9,7 @@ import (
 
 func main() {
 
-	if err := dal.InitDB("admin:password@tcp(119.29.111.64)/testdb"); err != nil {
+	if err := dal.InitDB("admin:testdb123456@tcp(119.29.111.64)/testdb?charset=utf8&parseTime=True&loc=Local"); err != nil {
 		fmt.Println("Db error:%v", err)
 		return
 	}
@@ -23,6 +23,7 @@ func main() {
 	r.POST("/lists",HandleAddList)
 	r.POST("/lists/song",HandleListAddSong)
 	r.DELETE("/lists/song",HandleDeleteListSong)
+	r.GET("/lists/song",HandleGetListSongs)
 	r.GET("/play",HandleLikestatus)
 	//r.POST("/play",HandleAddLike)
 	r.DELETE("/play",HandleDeleteLike)
@@ -34,5 +35,5 @@ func main() {
 	r.POST("/user",HandleAddUser)
 	r.DELETE("/list",HandleDeleteList)
 	fmt.Printf("Ready!")
-	r.Run(":7007")
+	r.Run(":9009")
 }
