@@ -5,7 +5,6 @@ import (
 	"database/sql"
 	"fmt"
 	_ "github.com/Go-SQL-Driver/mysql"
-	"strconv"
 	"time"
 )
 
@@ -40,15 +39,13 @@ func CreateComment(Uid string,Mid string, content string) error {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	db, err := sql.Open("mysql", "admin:testdb123456@tcp(119.29.111.64:3306)/testdb?parseTime=true")
 	checkErr(err)
-	var cid string
+	var cid int
 	rows, err := db.Query("SELECT cid FROM comments")//获得comments表中primarykey：cid的最大值
 	for rows.Next() {
 		err = rows.Scan(&cid)
 		checkErr(err)
 	}
-	icid ,err :=strconv.Atoi(cid)
-	icid =icid+1
-	cid=strconv.Itoa(icid)
+	cid = cid + 1
 	//插入数据
 	stmt, err := db.Prepare("INSERT INTO comments SET cid=?,mid=?,uid=?,content=?,create_at=?,update_at=?")//准备插入
 	checkErr(err)
