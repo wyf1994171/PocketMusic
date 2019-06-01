@@ -28,7 +28,7 @@ var songResult = result{}
 
 func HandleSearch(c *gin.Context) {
 
-	db, err := sql.Open("mysql", "admin:testdb123456@tcp(119.29.111.64:3306)/testdb?parseTime=true")
+	db, err := sql.Open("mysql", dsn)
 	checkErr(err)
 	index = c.Param("Mname_Or_Singer")
 	//查询数据
@@ -55,8 +55,9 @@ func printSearch(rows *sql.Rows, c *gin.Context) {
 			url      string
 			createAt time.Time
 			updateAt time.Time
+			status   int
 		)
-		err := rows.Scan(&id, &mid, &mname, &singer, &lrc, &url, &createAt, &updateAt)
+		err := rows.Scan(&id, &mid, &mname, &singer, &lrc, &url, &createAt, &updateAt, &status)
 		checkErr(err)
 		fmt.Println(id)
 		songResult.id = id
