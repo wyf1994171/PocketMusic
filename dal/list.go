@@ -35,7 +35,7 @@ func AddList(uid string,name string) (uint,error) {
 		Num: 0,
 		UID: uid,
 	}
-	err := db.Save(list.RecordMeta.ID).Error
+	err := db.Save(list).Error
 	return list.RecordMeta.ID, err
 }
 

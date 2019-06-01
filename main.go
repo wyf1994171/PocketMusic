@@ -39,5 +39,5 @@ func main() {
 	r.POST("/user",HandleAddUser)
 	r.DELETE("/list",HandleDeleteList)
 	fmt.Printf("Ready!")
-	r.Run(":9009")
+	r.Run(":7007")
 }
