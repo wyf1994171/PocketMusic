@@ -120,6 +120,8 @@ func HandleDeleteList(ctx *gin.Context)  {
 		return
 	}
 	for _,x:=range req.Lid{
+		//println("uid: ",req.Uid)
+		//println("lid:",x)
 		err:=dal.DeleteList(req.Uid,x)
 		if err!=nil{
 			return

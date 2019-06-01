@@ -90,6 +90,12 @@ func DeleteListSong(lid,mid uint) error {
 }
 
 func DeleteList(Uid string,Lid uint)(error)  {
-	return db.Table("lists").Where("id = ? and uid =?",Lid,Uid).Update("status = 1").Error
+	//println("uid: ",Uid)
+	//println("lid:",Lid)
+	//count:=0
+	//db.Table("lists").Where("uid =? and id =?",Uid,Lid).Count(&count)
+	//println("count:",count)
+	_,err:=db.DB().Exec("update lists set status = 1 where id = ? and uid =?",Lid,Uid)
+	return err
 }
 

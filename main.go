@@ -7,7 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
- var dsn = "admin:t@tcp(119.29.111.64)/testdb?charset=utf8&parseTime=True&loc=Local"
+ var dsn = "admin:password@tcp(119.29.111.64)/testdb?charset=utf8&parseTime=True&loc=Local"
 
 
 func main() {
