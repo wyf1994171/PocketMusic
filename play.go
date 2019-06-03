@@ -5,6 +5,7 @@ import (
 	"PocketMusic/dal/model"
 	"github.com/gin-gonic/gin"
 	"io/ioutil"
+	//"strings"
 )
 
 type GetLikeStatus struct {
@@ -93,7 +94,9 @@ func HandleGetMusic(c *gin.Context) {
 		music.Mid = musicinfo.Mid
 		music.Name = musicinfo.Mname
 		music.Singer = musicinfo.Singer
-		music.Lyrics = musicinfo.Lrc
+		source,_:=ioutil.ReadFile(musicinfo.Lrc)
+		music.Lyrics=string(source)
+		//println("lrc:",music.Lyrics)
 		music.Audio = musicinfo.Source
 		//println("source",source)
 		writeResponse(c, 0, "", music)
