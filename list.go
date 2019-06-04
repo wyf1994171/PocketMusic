@@ -46,6 +46,11 @@ func HandleDeleteListSong (ctx *gin.Context) {
 			return
 		}
 	}
+	err:=dal.ChangeNum(req.Lid)
+	if err != nil {
+		writeResponse(ctx,-1,err.Error(),nil)
+		return
+	}
 	writeResponse(ctx,0,"success",nil)
 }
 func HandleListAddSong (ctx *gin.Context) {
@@ -60,6 +65,11 @@ func HandleListAddSong (ctx *gin.Context) {
 			writeResponse(ctx,-1,err.Error(),nil)
 			return
 		}
+	}
+	err:=dal.ChangeNum(req.Lid)
+	if err != nil {
+		writeResponse(ctx,-1,err.Error(),nil)
+		return
 	}
 	writeResponse(ctx,0,"success",nil)
 }

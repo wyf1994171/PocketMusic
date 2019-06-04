@@ -99,3 +99,12 @@ func DeleteList(Uid string,Lid uint)(error)  {
 	return err
 }
 
+func ChangeNum(Lid uint)error  {
+	count:=0
+	err:=db.Table("list_songs").Where("lid=? and status=0",Lid).Count(&count).Error
+	if err!=nil{
+		return err
+	}
+	_,err=db.DB().Exec("update lists set num = ? where id = ?",count,Lid)
+	return err
+}
